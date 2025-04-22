@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Conexión a MongoDB
-mongoose.connect('mongodb://localhost:27017/inmobiliaria', {
+mongoose.connect('mongodb://localhost:27017/EduTrack360', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => console.log('✅ Conectado a MongoDB'))

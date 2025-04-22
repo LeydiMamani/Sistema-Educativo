@@ -3,6 +3,8 @@ const router = express.Router();
 const Usuario = require('../models/Usuario');
 
 // REGISTRO
+/*
+// REGISTRO
 router.post('/register', async (req, res) => {
   try {
     const { nombre, correo, password, rol } = req.body;
@@ -18,6 +20,7 @@ router.post('/register', async (req, res) => {
     res.status(500).json({ message: 'Error en el servidor' });
   }
 });
+*/
 
 // LOGIN
 router.post('/login', async (req, res) => {

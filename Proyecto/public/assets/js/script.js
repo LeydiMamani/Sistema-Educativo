@@ -1,10 +1,8 @@
 'use strict';
 
-
-
 /**
  * PRELOAD
- * 
+ *
  * loading will be end after document is loaded
  */
 
@@ -15,8 +13,6 @@ window.addEventListener("load", function () {
   document.body.classList.add("loaded");
 });
 
-
-
 /**
  * add event listener on multiple elements
  */
@@ -26,8 +22,6 @@ const addEventOnElements = function (elements, eventType, callback) {
     elements[i].addEventListener(eventType, callback);
   }
 }
-
-
 
 /**
  * NAVBAR
@@ -44,8 +38,6 @@ const toggleNavbar = function () {
 }
 
 addEventOnElements(navTogglers, "click", toggleNavbar);
-
-
 
 /**
  * HEADER & BACK TOP BTN
@@ -78,8 +70,6 @@ window.addEventListener("scroll", function () {
   }
 });
 
-
-
 /**
  * HERO SLIDER
  */
@@ -108,7 +98,9 @@ const slideNext = function () {
   updateSliderPos();
 }
 
-heroSliderNextBtn.addEventListener("click", slideNext);
+if (heroSliderNextBtn) { // Verifica si el botón existe
+  heroSliderNextBtn.addEventListener("click", slideNext);
+}
 
 const slidePrev = function () {
   if (currentSlidePos <= 0) {
@@ -120,7 +112,9 @@ const slidePrev = function () {
   updateSliderPos();
 }
 
-heroSliderPrevBtn.addEventListener("click", slidePrev);
+if (heroSliderPrevBtn) { // Verifica si el botón existe
+  heroSliderPrevBtn.addEventListener("click", slidePrev);
+}
 
 /**
  * auto slide
@@ -129,20 +123,20 @@ heroSliderPrevBtn.addEventListener("click", slidePrev);
 let autoSlideInterval;
 
 const autoSlide = function () {
-  autoSlideInterval = setInterval(function () {
-    slideNext();
-  }, 7000);
+  if (heroSlider) { // Verifica si el slider existe
+    autoSlideInterval = setInterval(function () {
+      slideNext();
+    }, 7000);
+  }
 }
 
-addEventOnElements([heroSliderNextBtn, heroSliderPrevBtn], "mouseover", function () {
+addEventOnElements([heroSliderNextBtn, heroSliderPrevBtn].filter(Boolean), "mouseover", function () { // Filtra elementos null
   clearInterval(autoSlideInterval);
 });
 
-addEventOnElements([heroSliderNextBtn, heroSliderPrevBtn], "mouseout", autoSlide);
+addEventOnElements([heroSliderNextBtn, heroSliderPrevBtn].filter(Boolean), "mouseout", autoSlide); // Filtra elementos null
 
 window.addEventListener("load", autoSlide);
-
-
 
 /**
  * PARALLAX EFFECT
@@ -153,7 +147,6 @@ const parallaxItems = document.querySelectorAll("[data-parallax-item]");
 let x, y;
 
 window.addEventListener("mousemove", function (event) {
-
   x = (event.clientX / window.innerWidth * 10) - 5;
   y = (event.clientY / window.innerHeight * 10) - 5;
 
@@ -162,9 +155,7 @@ window.addEventListener("mousemove", function (event) {
   y = y - (y * 2);
 
   for (let i = 0, len = parallaxItems.length; i < len; i++) {
-    x = x * Number(parallaxItems[i].dataset.parallaxSpeed);
-    y = y * Number(parallaxItems[i].dataset.parallaxSpeed);
-    parallaxItems[i].style.transform = `translate3d(${x}px, ${y}px, 0px)`;
+    const speed = Number(parallaxItems[i].dataset.parallaxSpeed) || 0.5; // Añade un valor por defecto
+    parallaxItems[i].style.transform = `translate3d(${x * speed}px, ${y * speed}px, 0px)`;
   }
-
 });
