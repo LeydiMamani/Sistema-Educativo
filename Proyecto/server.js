@@ -1,53 +1,29 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const { MongoClient } = require('mongodb');
-const path = require('path');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 
-const app = express();
-const PORT = 3000;
+// Reemplaza <db_password> con tu contraseña real
+const uri = "mongodb+srv://prueba-log:123.123.123@cluster0.ya8zzhl.mongodb.net/?appName=Cluster0";
 
-const uri = 'mongodb+srv://user2:<db_12341234>@cluster1.5tdamcf.mongodb.net/'; // Cambia si usas Mongo Atlas
-const dbName = 'EduTrack360';
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
-
-app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-
-    const client = new MongoClient(uri);
-    try {
-        await client.connect();
-        const db = client.db(dbName);
-        const users = db.collection('usuarios');
-
-        const user = await users.findOne({ email, password });
-        if (user) {
-            // Redirigir según rol
-            if (user.rol === 'Administrador') {
-                return res.json({ redirect: '/dashboard/admin' });
-            } else if (user.rol === 'Estudiante') {
-                return res.json({ redirect: '/dashboard/estudiante' });
-            } else if (user.rol === 'Docente') {
-                return res.json({ redirect: '/dashboard/docente' });
-            }
-        } else {
-            return res.status(401).json({ error: 'Credenciales inválidas' });
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Error en el servidor' });
-    } finally {
-        await client.close();
-    }
+// Crear un MongoClient con la configuración de la versión de la API
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
 });
 
-// Simulación de dashboards (puedes reemplazar por HTML reales)
-app.get('/dashboard/admin', (req, res) => res.send('Bienvenido Administrador'));
-app.get('/dashboard/estudiante', (req, res) => res.send('Bienvenido Estudiante'));
-app.get('/dashboard/docente', (req, res) => res.send('Bienvenido Docente'));
+async function run() {
+  try {
+    // Conectar al servidor MongoDB
+    await client.connect();
+    // Hacer un ping para confirmar la conexión exitosa
+    await client.db("EduTrack360").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Asegura que el cliente se cierre al finalizar o si ocurre un error
+    await client.close();
+  }
+}
 
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+// Ejecutar la función
+run().catch(console.dir);
