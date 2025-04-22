@@ -3,50 +3,128 @@
     <nav id="menu-principal">
         <div class="menu-section" data-rol="administrador">
             <h3>Gestión de Cuentas</h3>
-            <a href="#" data-rol="administrador">Profesores</a>
-            <a href="#" data-rol="administrador">Alumnos</a>
+            <a href="dashboard_alumno" data-rol="administrador">Profesores</a>
+            <a href="dashboard_docente" data-rol="administrador">Alumnos</a>
         </div>
-        <a href="#" data-rol="alumno profesor" class="menu-item">Mi Aprendizaje</a>
-        <a href="#" data-rol="alumno profesor" class="menu-item">Cursos</a>
-        <a href="#" data-rol="alumno profesor" class="menu-item">Tareas</a>
-        <a href="#" data-rol="alumno profesor administrador" class="menu-item">Mi Perfil</a>
-        <a href="#" data-rol="administrador profesor">Reportes</a>
-        <a href="#" data-rol="administrador">Configuración</a>
+        <a href="dashboard_miaprendizaje" data-rol="alumno profesor" class="menu-item">Mi Aprendizaje</a>
+        <a href="dashboard_miscursos" data-rol="alumno profesor" class="menu-item">Mis Cursos</a>
+        <a href="dashboard_miscursos" data-rol="alumno profesor" class="menu-item">Cursos</a>
+        <a href="dashboard_tareas" data-rol="alumno profesor" class="menu-item">Tareas</a>
+        <a href="dashboard_miperfil" data-rol="alumno profesor administrador" class="menu-item">Mi Perfil</a>
+
     </nav>
-    <a href="#" class="logout">Cerrar sesión</a>
+    <a href="index" class="logout">Cerrar sesión</a>
 </div>
 
 <style>
-    /* Estilos adicionales para la estructura del menú */
-    .menu-section h3 {
-        color: #a78bfa;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        padding-left: 10px;
-        border-left: 3px solid #a78bfa;
-    }
+   /* Estilos copiados del menú de alumnos */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f3f4f6; /* Un gris claro suave */
+    color: #374151; /* Gris oscuro para el texto principal */
+    display: flex;
+    min-height: 100vh;
+}
 
-    .menu-item {
-        display: block;
-        color: white;
-        text-decoration: none;
-        margin: 10px 0;
-        padding: 10px;
-        border-radius: 8px;
-        font-weight: normal;
-        background-color: transparent;
-    }
+.sidebar {
+    width: 250px; /* Un poco más ancho */
+    height: 100vh;
+    background: #111827; /* Un tono oscuro moderno */
+    color: #e5e7eb; /* Gris claro para el texto del menú */
+    padding: 20px;
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Asegura que esté sobre el contenido principal */
+}
 
-    .menu-item:active {
-        background-color: transparent;
-        font-weight: bold;
-    }
+.sidebar h2 {
+    color: #8b5cf6; /* Un púrpura vibrante para el título */
+    margin-bottom: 30px;
+    font-size: 1.75rem;
+    font-weight: 600;
+    padding-left: 10px;
+    border-left: 4px solid #8b5cf6;
+}
 
-    .menu-item.active {
-        background: #a78bfa;
-        color: #2d2c3d;
-        font-weight: bold;
-    }
+.sidebar nav {
+    margin-top: 20px;
+}
+
+.sidebar nav a {
+    display: block;
+    color: #d1d5db; /* Un gris más claro para los enlaces */
+    text-decoration: none;
+    margin: 10px 0;
+    padding: 12px 15px;
+    border-radius: 6px;
+    font-weight: 400;
+    background-color: transparent;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.sidebar nav a:hover {
+    background-color: #1f2937; /* Un tono ligeramente más claro al pasar el ratón */
+    color: #f9fafb;
+}
+
+.sidebar nav a.active {
+    background: #6d28d9; /* Un púrpura más oscuro y акцент */
+    color: #f9fafb;
+    font-weight: 500;
+}
+
+.sidebar .logout {
+    color: #ef4444; /* Un rojo para el botón de cerrar sesión */
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s ease-in-out;
+}
+
+.sidebar .logout:hover {
+    color: #fca5a5;
+}
+
+/* Estilos específicos para la estructura del menú que ya tenías */
+.sidebar .menu-section {
+    margin-bottom: 20px;
+}
+
+.sidebar .menu-section h3 {
+    color: #a78bfa; /* Mantenemos este color акцент */
+    margin-top: 15px;
+    margin-bottom: 8px;
+    padding-left: 10px;
+    border-left: 3px solid #a78bfa;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.sidebar .menu-section a {
+    display: block;
+    color: #d1d5db; /* Usamos el color de los enlaces del menú principal */
+    text-decoration: none;
+    margin: 8px 0;
+    padding: 12px 15px; /* Usamos el padding de los enlaces del menú principal */
+    border-radius: 6px; /* Usamos el border-radius de los enlaces del menú principal */
+    font-weight: 400;
+    background-color: transparent;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.sidebar .menu-section a:hover {
+    background-color: #1f2937; /* Usamos el hover de los enlaces del menú principal */
+    color: #f9fafb;
+}
 </style>
 
 <script>

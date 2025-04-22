@@ -15,50 +15,19 @@
             min-height: 100vh;
         }
 
-        .sidebar {
+        .sidebar-container {
             width: 200px;
             height: 100vh;
-            background: #2d2c3d;
-            padding: 20px;
-            box-sizing: border-box;
             position: fixed;
             left: 0;
             top: 0;
-            overflow-y: auto;
+            z-index: 10;
         }
 
-        .sidebar h2 {
-            color: #a78bfa;
-            margin-bottom: 40px;
-        }
-
-        .sidebar nav a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            margin: 15px 0;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: normal;
-            background-color: transparent;
-        }
-
-        .sidebar nav a:active {
-            background-color: transparent;
-            font-weight: bold;
-        }
-
-        .sidebar nav a.active {
-            background: #a78bfa;
-            color: #2d2c3d;
-            font-weight: bold;
-        }
-
-        .sidebar .logout {
-            color: #e94f37;
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
+        .sidebar-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         .main {
@@ -95,15 +64,15 @@
         }
 
         .top-actions button.new-button {
-            background-color: #4CAF50; /* Verde */
+            background-color: #4CAF50;
         }
 
         .top-actions button.refresh-button {
-            background-color: #2196F3; /* Azul */
+            background-color: #2196F3;
         }
 
         .top-actions button.export-button {
-            background-color: #FF9800; /* Naranja */
+            background-color: #FF9800;
         }
 
         .top-actions button:hover {
@@ -112,10 +81,10 @@
 
         .filter-section {
             display: grid;
-            grid-template-columns: repeat(3, auto); /* Tres columnas de ancho automático */
-            gap: 20px 15px; /* Aumenté el gap entre filas */
-            margin-bottom: 30px; /* Aumenté el margen inferior */
-            padding: 15px; /* Aumenté el padding */
+            grid-template-columns: repeat(3, auto);
+            gap: 20px 15px;
+            margin-bottom: 30px;
+            padding: 15px;
             background: #f8f9fa;
             border-radius: 6px;
             border: 1px solid #eee;
@@ -128,10 +97,10 @@
             font-size: 1.3em;
         }
 
-        .filter-section > div { /* Contenedor para label e input/select */
+        .filter-section > div {
             display: flex;
             align-items: center;
-            gap: 10px; /* Aumenté el espacio entre label e input/select */
+            gap: 10px;
         }
 
         .filter-section label {
@@ -140,7 +109,7 @@
             font-size: 0.9em;
             white-space: nowrap;
             text-align: right;
-            width: 120px; /* Ajusté el ancho del label para docentes */
+            width: 120px;
             flex-shrink: 0;
         }
 
@@ -158,7 +127,7 @@
             grid-column: 3 / -1;
             display: flex;
             justify-content: flex-end;
-            gap: 10px; /* Aumenté el gap entre los botones */
+            gap: 10px;
             align-items: center;
         }
 
@@ -215,7 +184,7 @@
         }
 
         th {
-            background-color: #673ab7; /* Morado */
+            background-color: #673ab7;
             font-weight: bold;
             color: white;
         }
@@ -272,7 +241,7 @@
         }
 
         .documents-button {
-            background-color: #9c27b0; /* Morado para el botón de documentos */
+            background-color: #9c27b0;
             color: white;
             border: none;
             border-radius: 4px;
@@ -286,7 +255,6 @@
             background-color: #7b1fa2;
         }
 
-        /* Estilos para el modal (oculto por defecto) */
         .modal {
             display: none;
             position: fixed;
@@ -296,15 +264,15 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.4); /* Fondo oscuro con transparencia */
+            background-color: rgba(0,0,0,0.4);
         }
 
         .modal-content {
             background-color: #fefefe;
-            margin: 15% auto; /* 15% desde la parte superior y centrado */
+            margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%; /* Puede ajustarse según necesites */
+            width: 80%;
             border-radius: 8px;
             position: relative;
         }
@@ -340,46 +308,37 @@
             border-bottom: none;
         }
 
-        /* Estilos para hacer la tabla más responsiva (ocultar columnas en pantallas pequeñas) */
         @media (max-width: 1150px) {
-            th:nth-child(8), td:nth-child(8), /* GRADO ACADÉMICO */
-            th:nth-child(9), td:nth-child(9) /* MATERIA */ {
+            th:nth-child(8), td:nth-child(8),
+            th:nth-child(9), td:nth-child(9) {
                 display: none;
             }
         }
 
         @media (max-width: 1050px) {
-            th:nth-child(10), td:nth-child(10), /* GRADO */
-            th:nth-child(11), td:nth-child(11) /* SALÓN ASIGNADO */ {
+            th:nth-child(10), td:nth-child(10),
+            th:nth-child(11), td:nth-child(11) {
                 display: none;
             }
         }
 
         @media (max-width: 900px) {
-            th:nth-child(7), td:nth-child(7), /* CORREO */
-            th:nth-child(12), td:nth-child(12) /* ESTADO */ {
+            th:nth-child(7), td:nth-child(7),
+            th:nth-child(12), td:nth-child(12) {
                 display: none;
             }
         }
 
         @media (max-width: 750px) {
-            th:nth-child(5), td:nth-child(5) /* EDAD */ {
+            th:nth-child(5), td:nth-child(5) {
                 display: none;
             }
         }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>Edutrack360</h2>
-        <nav>
-            <a href="#">Alumnos</a>
-            <a href="#" class="active">Docentes</a>
-            <a href="#">Cursos</a>
-            <a href="#">Reportes</a>
-            <a href="#">Configuración</a>
-        </nav>
-        <a href="#" class="logout">Cerrar sesión</a>
+    <div class="sidebar-container">
+        <iframe src="menu.html" class="sidebar-iframe"></iframe>
     </div>
 
     <div class="main">
@@ -406,14 +365,15 @@
             </div>
             <div>
                 <label for="gradoAcademico">Grado Académico:</label>
-                <select id="gradoAcademico <option value="">Todos</option>
+                <select id="gradoAcademico">
+                    <option value="">Todos</option>
                     <option value="bachiller">Bachiller</option>
                     <option value="licenciado">Licenciado</option>
                     <option value="magister">Magíster</option>
                     <option value="doctor">Doctor</option>
                     <option value="titulado">Titulado</option>
                     <option value="colegiado">Colegiado</option>
-                    </select>
+                </select>
             </div>
             <div>
                 <label for="materia">Materia:</label>
@@ -422,7 +382,7 @@
                     <option value="matematicas">Matemáticas</option>
                     <option value="ciencia">Ciencia</option>
                     <option value="lenguaje">Lenguaje</option>
-                    </select>
+                </select>
             </div>
             <div>
                 <label for="estado">Estado:</label>
@@ -502,14 +462,14 @@
 
         <div id="documentsModal" class="modal">
             <div class="modal-content">
-                <span class="close-button" onclick="closeModal()">&times;</span>
+                <span class="close-button" onclick="closeModal()">×</span>
                 <h2>Documentos de Docente <span id="studentId"></span></h2>
                 <ul class="documents-list" id="documentsList">
-                    </ul>
+                </ul>
             </div>
         </div>
     </div>
 
-    <script src="../models/Profesor.js"></script>
+    <script src="../models/Docente.js"></script>
 </body>
 </html>

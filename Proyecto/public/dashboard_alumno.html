@@ -1,524 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado de Alumnos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background: #f5f5ff;
-            color: #1c1c1c;
-            display: flex;
-            min-height: 100vh;
-        }
-
-        .sidebar {
-            width: 200px;
-            height: 100vh;
-            background: #2d2c3d;
-            padding: 20px;
-            box-sizing: border-box;
-            position: fixed;
-            left: 0;
-            top: 0;
-            overflow-y: auto;
-        }
-
-        .sidebar h2 {
-            color: #a78bfa;
-            margin-bottom: 40px;
-        }
-
-        .sidebar nav a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            margin: 15px 0;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: normal;
-            background-color: transparent;
-        }
-
-        .sidebar nav a:active {
-            background-color: transparent;
-            font-weight: bold;
-        }
-
-        .sidebar nav a.active {
-            background: #a78bfa;
-            color: #2d2c3d;
-            font-weight: bold;
-        }
-
-        .sidebar .logout {
-            color: #e94f37;
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            text-decoration: none;
-        }
-
-        .main {
-            margin-left: 220px;
-            padding: 40px;
-            background: #ffffff;
-            border-radius: 30px 0 0 30px;
-            box-sizing: border-box;
-            width: calc(100% - 220px);
-            min-height: calc(100vh - 80px);
-        }
-
-        .main h1 {
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-        }
-
-        .top-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .top-actions button {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: opacity 0.3s ease;
-        }
-
-        .top-actions button:hover {
-            opacity: 0.8;
-        }
-
-        .filter-section {
-            display: grid;
-            grid-template-columns: repeat(3, auto);
-            gap: 20px 15px;
-            margin-bottom: 30px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 6px;
-            border: 1px solid #eee;
-        }
-
-        .filter-section h2 {
-            grid-column: 1 / -1;
-            margin-bottom: 15px;
-            color: #555;
-            font-size: 1.3em;
-        }
-
-        .filter-section > div {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .filter-section label {
-            font-weight: bold;
-            color: #555;
-            font-size: 0.9em;
-            white-space: nowrap;
-            text-align: right;
-            width: 90px;
-            flex-shrink: 0;
-        }
-
-        .filter-section input[type="text"],
-        .filter-section select {
-            padding: 8px;
-            border: 1px solid #ced4da;
-            border-radius: 6px;
-            width: 100%;
-            box-sizing: border-box;
-            font-size: 0.9em;
-        }
-
-        .filter-buttons {
-            grid-column: 3 / -1;
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .filter-buttons button {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: opacity 0.3s ease;
-            font-size: 0.9em;
-        }
-
-        .filter-buttons button:hover {
-            opacity: 0.8;
-        }
-
-        .table-container {
-            overflow-x: auto;
-            margin-top: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-            white-space: nowrap;
-        }
-
-        th {
-            background-color: #673ab7;
-            font-weight: bold;
-            color: white;
-        }
-
-        tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        tbody tr:hover {
-            background-color: #e0f7fa;
-        }
-
-        .status-activo {
-            background-color: #e8f5e9;
-            color: #388e3c;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.9em;
-            text-align: center;
-            display: inline-block;
-        }
-
-        .status-inactivo {
-            background-color: #ffebee;
-            color: #d32f2f;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.9em;
-            text-align: center;
-            display: inline-block;
-        }
-
-        .actions {
-            text-align: center;
-        }
-
-        .actions button {
-            padding: 6px 8px;
-            margin-left: 5px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9em;
-            line-height: 1; /* Para alinear el icono verticalmente */
-        }
-
-        .actions button i {
-            font-size: 1.2em; /* Ajusta el tamaño del icono */
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            border-radius: 8px;
-            position: relative;
-        }
-
-        .close-button {
-            color: #aaa;
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 28px;
-            font-weight: bold;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .documents-list {
-            padding: 0;
-            list-style-type: none;
-        }
-        .top-actions button.new-button {
-            background-color: #4CAF50; /* Verde */
-        }
-
-        .top-actions button.refresh-button {
-            background-color: #2196F3; /* Azul */
-        }
-
-        .top-actions button.export-button {
-            background-color: #FF9800; /* Naranja */
-        }
-        .documents-list li {
-            margin-bottom: 10px;
-            padding: 8px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .documents-list li:last-child {
-            border-bottom: none;
-        }
-
-        #nuevoEstudianteModal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-
-        #nuevoEstudianteModal .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 60%;
-            border-radius: 8px;
-            position: relative;
-        }
-
-        #nuevoEstudianteModal .close-button {
-            color: #aaa;
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        #formularioNuevoEstudiante div {
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-
-        #formularioNuevoEstudiante label {
-            width: 120px;
-            display: inline-block;
-            margin-right: 10px;
-            text-align: right;
-            font-weight: bold;
-            color: #555;
-        }
-
-        #formularioNuevoEstudiante input[type="text"],
-        #formularioNuevoEstudiante input[type="number"],
-        #formularioNuevoEstudiante input[type="tel"],
-        #formularioNuevoEstudiante select {
-            padding: 8px;
-            border: 1px solid #ced4da;
-            border-radius: 6px;
-            width: calc(100% - 130px);
-            box-sizing: border-box;
-            font-size: 0.9em;
-        }
-
-        #formularioNuevoEstudiante button[type="submit"] {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-            font-size: 0.9em;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        #formularioNuevoEstudiante button[type="submit"]:hover {
-            background-color: #388e3c;
-        }
-
-        #confirmarEliminarModal .modal-content {
-            background-color: #fefefe;
-            margin: 20% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 50%;
-            border-radius: 8px;
-            position: relative;
-            text-align: center;
-        }
-
-        #confirmarEliminarModal .modal-actions {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        #confirmarEliminarModal .modal-actions button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-            font-size: 0.9em;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        #confirmarEliminarModal #confirmarEliminarBoton {
-            background-color: #d32f2f;
-            color: white;
-        }
-
-        #confirmarEliminarModal #confirmarEliminarBoton:hover {
-            background-color: #c62828;
-        }
-
-        #confirmarEliminarModal #cancelarEliminarBoton {
-            background-color: #6c757d; /* Bootstrap secondary color */
-            color: white;
-        }
-
-        #confirmarEliminarModal #cancelarEliminarBoton:hover {
-            background-color: #545b62;
-        }
-        .edit-button {
-            background-color: #4fc3f7;
-            color: white;
-        }
-        .delete-button {
-            background-color: #e57373;
-            color: white;
-        }
-        .documents-button {
-            background-color: #9c27b0; /* Morado para el botón de documentos */
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 8px 12px;
-            cursor: pointer;
-            font-size: 0.9em;
-            margin-left: 5px;
-        }
-
-        /* Estilos para los botones de iconos */
-        .top-actions button i {
-            font-size: 1.5em;
-        }
-        .top-actions button span {
-            display: none; /* Ocultar texto en pantallas más pequeñas */
-        }
-        @media (min-width: 576px) { /* En pantallas medianas y grandes, mostrar texto */
-            .top-actions button span {
-                display: inline-block;
-                margin-left: 5px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="sidebar">
-        <h2>Edutrack360</h2>
-        <nav>
-            <a href="#" class="active">Alumnos</a>
-            <a href="#">Cursos</a>
-            <a href="#">Profesores</a>
-            <a href="#">Reportes</a>
-            <a href="#">Configuración</a>
-        </nav>
-        <a href="#" class="logout"><i class="bi bi-box-arrow-left"></i> Cerrar sesión</a>
-    </div>
-
-    <div class="main">
-        <h1>Alumnos</h1>
-        <div class="top-actions">
-            <button class="new-button">+ Nuevo Docente</button>
-            <button class="refresh-button">🔄 Refrescar</button>
-            <button class="export-button">Exportar Excel</button>
-        </div>
-
-        <div class="filter-section">
-            <h2>Filtro</h2>
-            <div>
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" placeholder="Buscar">
-            </div>
-            <div>
-                <label for="apellido">Apellido:</label>
-                <input type="text" id="apellido" placeholder="Buscar">
-            </div>
-            <div>
-                <label for="edad">Edad:</label>
-                <input type="text" id="edad" placeholder="Ingrese">
-            </div>
-            <div>
-                <label for="salon">Salón:</label>
-                <select id="salon">
-                    <option value="">Todos</option>
-                    <option value="A1">A1</option>
-                    <option value="B2">B2</option>
-                    <option value="C3">C3</option>
-                </select>
-            </div>
-            <div>
-                <label for="estado">Estado:</label>
-                <select id="estado">
-                    <option value="">Todos</option>
-                    <option value="activo">Activo</option>
-                    <option value="inactivo">Inactivo</option>
-                </select>
-            </div>
-            <div class="filter-buttons">
-                <button class="btn btn-primary"><i class="bi bi-funnel"></i> Filtrar</button>
-                <button class="btn btn-secondary clear-button"><i class="bi bi-x-octagon"></i> Limpiar</button>
-            </div>
-        </div>
-
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>N°</th>
-                        <th>NOMBRE</th>
-                        <th>APELLIDO</th>
-                        <th>EDAD</th>
-                        <th>DIRECCIÓN</th>
+<th>DIRECCIÓN</th>
                         <th>TELÉFONO</th>
                         <th>ESTADO</th>
                         <th>SALÓN</th>
@@ -531,7 +11,8 @@
                         <td>Juan</td>
                         <td>Pérez Gómez</td>
                         <td>16</td>
-                        <td>Av. Principal 123</td><td>987654321</td>
+                        <td>Av. Principal 123</td>
+                        <td>987654321</td>
                         <td><span class="status-activo">Activo</span></td>
                         <td>A1</td>
                         <td class="actions">
@@ -540,80 +21,80 @@
                             <button class="btn btn-secondary btn-sm documents-button" onclick="openModal('ALM001')"><i class="bi bi-file-earmark-text"></i></button>
                         </td>
                     </tr>
-                  
-                </tbody>
+                    </tbody>
             </table>
         </div>
 
-    <div id="nuevoEstudianteModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" id="cerrarNuevoEstudianteModal">&times;</span>
-            <h2>Nuevo Alumno</h2>
-            <form id="formularioNuevoEstudiante">
-                <div>
-                    <label for="nombreNuevo">Nombre:</label>
-                    <input type="text" id="nombreNuevo" name="nombre" required>
-                </div>
-                <div>
-                    <label for="apellidoNuevo">Apellido:</label>
-                    <input type="text" id="apellidoNuevo" name="apellido" required>
-                </div>
-                <div>
-                    <label for="edadNuevo">Edad:</label>
-                    <input type="number" id="edadNuevo" name="edad">
-                </div>
-                <div>
-                    <label for="direccionNuevo">Dirección:</label>
-                    <input type="text" id="direccionNuevo" name="direccion">
-                </div>
-                <div>
-                    <label for="telefonoNuevo">Teléfono:</label>
-                    <input type="tel" id="telefonoNuevo" name="telefono">
-                </div>
-                <div>
-                    <label for="salonNuevo">Salón:</label>
-                    <select id="salonNuevo" name="salon">
-                        <option value="">Seleccionar</option>
-                        <option value="A1">A1</option>
-                        <option value="B2">B2</option>
-                        <option value="C3">C3</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="estadoNuevo">Estado:</label>
-                    <select id="estadoNuevo" name="estado">
-                        <option value="activo">Activo</option>
-                        <option value="inactivo">Inactivo</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Guardar Alumno</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="confirmarEliminarModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" id="cerrarConfirmarEliminarModal">&times;</span>
-            <h2>Confirmar Eliminación</h2>
-            <p>¿Estás seguro de que deseas eliminar al alumno con ID: <span id="alumnoAEliminar"></span>?</p>
-            <div class="modal-actions">
-                <button id="confirmarEliminarBoton" class="btn btn-danger"><i class="bi bi-check-circle"></i> Eliminar</button>
-                <button id="cancelarEliminarBoton" class="btn btn-secondary"><i class="bi bi-x-circle"></i> Cancelar</button>
+        <div id="nuevoEstudianteModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="cerrarNuevoEstudianteModal">&times;</span>
+                <h2>Nuevo Alumno</h2>
+                <form id="formularioNuevoEstudiante">
+                    <div>
+                        <label for="nombreNuevo">Nombre:</label>
+                        <input type="text" id="nombreNuevo" name="nombre" required>
+                    </div>
+                    <div>
+                        <label for="apellidoNuevo">Apellido:</label>
+                        <input type="text" id="apellidoNuevo" name="apellido" required>
+                    </div>
+                    <div>
+                        <label for="edadNuevo">Edad:</label>
+                        <input type="number" id="edadNuevo" name="edad">
+                    </div>
+                    <div>
+                        <label for="direccionNuevo">Dirección:</label>
+                        <input type="text" id="direccionNuevo" name="direccion">
+                    </div>
+                    <div>
+                        <label for="telefonoNuevo">Teléfono:</label>
+                        <input type="tel" id="telefonoNuevo" name="telefono">
+                    </div>
+                    <div>
+                        <label for="salonNuevo">Salón:</label>
+                        <select id="salonNuevo" name="salon">
+                            <option value="">Seleccionar</option>
+                            <option value="A1">A1</option>
+                            <option value="B2">B2</option>
+                            <option value="C3">C3</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="estadoNuevo">Estado:</label>
+                        <select id="estadoNuevo" name="estado">
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Guardar Alumno</button>
+                </form>
             </div>
         </div>
-    </div>
 
-    <div id="documentsModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeModal()">&times;</span>
-            <h2>Documentos de <span id="studentId"></span></h2>
-            <ul class="documents-list" id="documentsList">
-            </ul>
+        <div id="confirmarEliminarModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="cerrarConfirmarEliminarModal">&times;</span>
+                <h2>Confirmar Eliminación</h2>
+                <p>¿Estás seguro de que deseas eliminar al alumno con ID: <span id="alumnoAEliminar"></span>?</p>
+                <div class="modal-actions">
+                    <button id="confirmarEliminarBoton" class="btn btn-danger"><i class="bi bi-check-circle"></i> Eliminar</button>
+                    <button id="cancelarEliminarBoton" class="btn btn-secondary"><i class="bi bi-x-circle"></i> Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="documentsModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal()">&times;</span>
+                <h2>Documentos de <span id="studentId"></span></h2>
+                <ul class="documents-list" id="documentsList">
+                </ul>
+            </div>
         </div>
     </div>
 
     <script src="../models/Alumno.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-  
+
 </body>
 </html>
